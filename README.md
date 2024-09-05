@@ -6,7 +6,7 @@
 でも可
 buildなしでcompose upだけでも多分動く
 
-mysqlが動くまでflaskに接続できない仕様にしてあるため、軌道に少し時間がかかる(ペンギンの環境だと1分弱くらい)
+mysqlが動くまでflaskに接続できない仕様にしてあるため、起動に少し時間がかかる(多分1分弱くらい)
 
 # flask操作
 `docker exec -it frask_dockerimage-app-1 /bin/bash`
