@@ -1,0 +1,34 @@
+version: '3'
+services:
+  app:
+    build: .
+    volumes:
+      - .:/code
+    tty: true
+    ports:
+      - "8000:5000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+        # mysqlが立ち上がらないと、appも動かないように設定
+  
+  mysql:
+    image: mysql
+    platform: linux/amd64
+    container_name: mysql-container
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: demo
+      TZ: "Asia/Tokyo"
+    volumes:
+      - ./database/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
+      # mysqlがappより先に動くように設定
